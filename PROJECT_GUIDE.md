@@ -38,10 +38,9 @@ conda activate poolenv
 git clone https://github.com/SJTU-RL2/pooltool.git
 cd pooltool
 # 安装poetry
-pip install "poetry>=1.8.3"
-poetry install --with=dev,docs
+pip install "poetry==2.2.1"
 # 基于源代码安装poolenv
-pip install -e . --extra-index-url https://archive.panda3d.org/
+poetry install --with=dev,docs
 # 运行base agent需要安装的库
 pip install bayesian-optimization numpy
 ```
