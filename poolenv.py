@@ -398,8 +398,14 @@ class PoolEnv():
             opponent_plus_eight = [bid for bid in self.balls.keys() if bid not in self.player_targets[player] and bid not in ['cue']]
             if ('8' not in opponent_plus_eight):
                 opponent_plus_eight.append('8')
-            if len(remaining_own_before) > 0 and first_contact_ball_id in opponent_plus_eight:
-                print(f"⚠️ Player {player} 首次碰撞为对方球或黑8，交换球权。")
+            # 当有自己的球剩余时，首次碰撞对方球或黑8犯规
+            # 当只剩黑八时，必须首次碰撞黑八，否则碰到对手球也犯规
+            if (len(remaining_own_before) > 0 and first_contact_ball_id in opponent_plus_eight) or \
+               (len(remaining_own_before) == 0 and first_contact_ball_id != '8'):
+                if len(remaining_own_before) == 0:
+                    print(f"⚠️ Player {player} 只剩黑八时首次碰撞非黑八球，交换球权。")
+                else:
+                    print(f"⚠️ Player {player} 首次碰撞为对方球或黑8，交换球权。")
                 self.curr_player = 1 - self.curr_player
                 self.last_state = save_balls_state(self.balls)
                 self.hit_count += 1
@@ -417,8 +423,8 @@ class PoolEnv():
                     print(f"📊 最大击球数详情：A剩余 {a_left}，B剩余 {b_left}，胜者：{self.winner}")
                 return {'ME_INTO_POCKET': own_pocketed, 'ENEMY_INTO_POCKET': enemy_pocketed, 'WHITE_BALL_INTO_POCKET': False, 'BLACK_BALL_INTO_POCKET': False, 'FOUL_FIRST_HIT': True, 'NO_POCKET_NO_RAIL': False, 'BALLS': copy.deepcopy(self.balls)}
 
-        if len(new_pocketed) == 0 and ((not cue_hit_cushion) or (not target_hit_cushion)):
-            print(f"⚠️ 本杆无进球且母球或目标球未碰库，交换球权。")
+        if len(new_pocketed) == 0 and ((not cue_hit_cushion) and (not target_hit_cushion)):
+            print(f"⚠️ 本杆无进球且母球和目标球均未碰库，交换球权。")
             self.curr_player = 1 - self.curr_player
             self.last_state = save_balls_state(self.balls)
             self.hit_count += 1
