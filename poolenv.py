@@ -376,9 +376,11 @@ class PoolEnv():
             return {'ME_INTO_POCKET': own_pocketed, 'ENEMY_INTO_POCKET': enemy_pocketed, 'WHITE_BALL_INTO_POCKET': False, 'BLACK_BALL_INTO_POCKET': True, 'FOUL_FIRST_HIT': False, 'NO_POCKET_NO_RAIL': False, 'BALLS': copy.deepcopy(self.balls)}
 
         if first_contact_ball_id is None:
-            print(f"⚠️ 本杆白球未接触任何球，交换球权。")
+            print(f"⚠️ 本杆白球未接触任何球，犯规，恢复上一杆状态，交换球权。")
+            # 保存击打前的balls状态用于返回
+            balls_before_shot = copy.deepcopy(self.last_state)
+            self.balls = restore_balls_state(self.last_state)
             self.curr_player = 1 - self.curr_player
-            self.last_state = save_balls_state(self.balls)
             self.hit_count += 1
             if self.hit_count >= self.MAX_HIT_COUNT:
                 print(f"⏰ 达到最大击球数，比赛结束！")
@@ -392,8 +394,7 @@ class PoolEnv():
                 else:
                     self.winner = "SAME"
                 print(f"📊 最大击球数详情：Player A剩余 {a_left}，Player B剩余 {b_left}，胜者：{self.winner}")
-            return {'ME_INTO_POCKET': own_pocketed, 'ENEMY_INTO_POCKET': enemy_pocketed, 'WHITE_BALL_INTO_POCKET': False, 'BLACK_BALL_INTO_POCKET': False, 'FOUL_FIRST_HIT': False, 'NO_POCKET_NO_RAIL': False, 'NO_HIT': True, 'BALLS': copy.deepcopy(self.balls)}
-
+            return {'ME_INTO_POCKET': own_pocketed, 'ENEMY_INTO_POCKET': enemy_pocketed, 'WHITE_BALL_INTO_POCKET': False, 'BLACK_BALL_INTO_POCKET': False, 'FOUL_FIRST_HIT': False, 'NO_POCKET_NO_RAIL': False, 'NO_HIT': True, 'BALLS': balls_before_shot}
         if first_contact_ball_id is not None:
             opponent_plus_eight = [bid for bid in self.balls.keys() if bid not in self.player_targets[player] and bid not in ['cue']]
             if ('8' not in opponent_plus_eight):
