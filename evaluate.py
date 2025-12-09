@@ -8,7 +8,7 @@ evaluate.py - Agent 评估脚本
 
 使用方式：
 1. 修改 agent_b 为你设计的待测试的 Agent， 与课程提供的BasicAgent对打
-2. 调整 n_games 设置对战局数（评分时设置为40局来计算胜率）
+2. 调整 n_games 设置对战局数（评分时设置为120局来计算胜率）
 3. 运行脚本查看结果
 """
 
@@ -23,7 +23,7 @@ set_random_seed(enable=False, seed=42)
 
 env = PoolEnv()
 results = {'AGENT_A_WIN': 0, 'AGENT_B_WIN': 0, 'SAME': 0}
-n_games = 40
+n_games = 120  # 对战局数 自己测试时可以修改 扩充为120局为了减少随机带来的扰动
 
 agent_a, agent_b = BasicAgent(), NewAgent()
 

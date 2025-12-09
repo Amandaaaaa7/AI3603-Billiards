@@ -116,7 +116,7 @@ if info['winner'] == 'A':
 
 ### 3.1 对战设置
 运行 `evaluate.py` 进行 Agent 对战测试：
-- **对战局数**：`n_games = 40` 局（10个完整循环）
+- **对战局数**：`n_games = 120` 局（4的倍数、30个完整循环）
 - **对战双方**：
   - Agent A = `BasicAgent()`（课程提供的基准智能体）
   - Agent B = 你设计的 `NewAgent()`（待测试智能体）
@@ -140,13 +140,13 @@ results['AGENT_B_SCORE'] = results['AGENT_B_WIN'] * 1 + results['SAME'] * 0.5
 **胜率公式**：
 ```
 胜率 = (获胜局数 + 0.5 × 平局数) / 总局数
-     = 最终得分 / 40
+     = 最终得分 / 120
 ```
 
 **示例**：
-- 40局比赛后，Agent B 结果：25胜、3平、12负
-- Agent B 得分 = 25 × 1 + 3 × 0.5 = **26.5 分**
-- Agent B 胜率 = 26.5 / 40 = **66.25%**
+- 120局比赛后，Agent B 结果：75胜、9平、36负
+- Agent B 得分 = 75 × 1 + 9 × 0.5 = **79.5 分**
+- Agent B 胜率 = 79.5 / 120 = **66.25%**
 
 ### 3.4 评分标准（参考）
 根据对战 `BasicAgent` 的胜率评估 Agent 性能：
@@ -173,10 +173,10 @@ python evaluate.py
 
 **输出示例**：
 ```
-最终结果： {'AGENT_A_WIN': 15, 'AGENT_B_WIN': 23, 'SAME': 2, 
-           'AGENT_A_SCORE': 16.0, 'AGENT_B_SCORE': 24.0}
+最终结果： {'AGENT_A_WIN': 45, 'AGENT_B_WIN': 69, 'SAME': 6, 
+           'AGENT_A_SCORE': 1648.0, 'AGENT_B_SCORE': 72.0}
 ```
-→ Agent B 胜率 = 24.0 / 40 = **60%**
+→ Agent B 胜率 = 72.0 / 120 = **60%**
 
 ---
 
