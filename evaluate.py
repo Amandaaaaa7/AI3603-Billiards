@@ -49,14 +49,15 @@ for i in range(n_games):
         
         done, info = env.get_done()
         if not done:
-            if step_info.get('FOUL_FIRST_HIT'):
-                print("本杆判罚：首次接触对方球或黑8，直接交换球权。")
-            if step_info.get('NO_POCKET_NO_RAIL'):
-                print("本杆判罚：无进球且母球或目标球未碰库，直接交换球权。")
-            if step_info.get('NO_HIT'):
-                print("本杆判罚：白球未接触任何球，直接交换球权。")
-            if step_info.get('ME_INTO_POCKET'):
-                print(f"我方球入袋：{step_info['ME_INTO_POCKET']}")
+            # poolenv中已有打印，无需再输出
+            # if step_info.get('FOUL_FIRST_HIT'):
+            #     print("本杆判罚：首次接触对方球或黑8，直接交换球权。")
+            # if step_info.get('NO_POCKET_NO_RAIL'):
+            #     print("本杆判罚：无进球且母球或目标球未碰库，直接交换球权。")
+            # if step_info.get('NO_HIT'):
+            #     print("本杆判罚：白球未接触任何球，直接交换球权。")
+            # if step_info.get('ME_INTO_POCKET'):
+            #     print(f"我方球入袋：{step_info['ME_INTO_POCKET']}")
             if step_info.get('ENEMY_INTO_POCKET'):
                 print(f"对方球入袋：{step_info['ENEMY_INTO_POCKET']}")
         if done:
