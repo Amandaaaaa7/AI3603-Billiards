@@ -366,10 +366,8 @@ class PoolEnv():
         remaining_own_before = [bid for bid in self.player_targets[player] if self.last_state[bid].state.s != 4]
         # 黑8掉袋 (胜负判断)
         if "8" in new_pocketed:
-            # 检查当前玩家是否清空了自己所有球
-            remaining_own = [bid for bid in self.player_targets[player] if self.balls[bid].state.s != 4]
-            
-            if len(remaining_own) == 0:
+            # 检查击球前是否已清空所有目标球（不能同时打进最后目标球+黑8）
+            if len(remaining_own_before) == 0:
                 print(f"🏆 Player {player} 成功打进黑8，获胜！")
                 self.winner = self.players[self.curr_player]
             else:
