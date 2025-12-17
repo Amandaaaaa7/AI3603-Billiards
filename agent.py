@@ -340,7 +340,7 @@ class BasicAgent(Agent):
             if shot is None:
                 raw_reward = -500.0
             else:
-                raw_reward = analyze_shot_for_reward_own(shot, last_state_snapshot, my_targets)
+                raw_reward = analyze_shot_for_reward(shot, last_state_snapshot, my_targets)
             
             # 映射公式: (val - min) / (max - min)
             normalized_reward = (raw_reward - (-500)) / 650.0
