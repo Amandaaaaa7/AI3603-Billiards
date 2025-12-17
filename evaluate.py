@@ -8,7 +8,7 @@ evaluate.py - Agent 评估脚本
 
 使用方式：
 1. 修改 agent_b 为你设计的待测试的 Agent， 与课程提供的BasicAgent对打
-2. 调整 n_games 设置对战局数（评分时设置为40局来计算胜率）
+2. 调整 n_games 设置对战局数（评分时设置为120局来计算胜率）
 3. 运行脚本查看结果
 """
 
@@ -23,7 +23,7 @@ set_random_seed(enable=False, seed=42)
 
 env = PoolEnv()
 results = {'AGENT_A_WIN': 0, 'AGENT_B_WIN': 0, 'SAME': 0}
-n_games = 40
+n_games = 120  # 对战局数 自己测试时可以修改 扩充为120局为了减少随机带来的扰动
 
 agent_a, agent_b = BasicAgent(), NewAgent()
 
@@ -49,14 +49,15 @@ for i in range(n_games):
         
         done, info = env.get_done()
         if not done:
-            if step_info.get('FOUL_FIRST_HIT'):
-                print("本杆判罚：首次接触对方球或黑8，直接交换球权。")
-            if step_info.get('NO_POCKET_NO_RAIL'):
-                print("本杆判罚：无进球且母球或目标球未碰库，直接交换球权。")
-            if step_info.get('NO_HIT'):
-                print("本杆判罚：白球未接触任何球，直接交换球权。")
-            if step_info.get('ME_INTO_POCKET'):
-                print(f"我方球入袋：{step_info['ME_INTO_POCKET']}")
+            # poolenv中已有打印，无需再输出
+            # if step_info.get('FOUL_FIRST_HIT'):
+            #     print("本杆判罚：首次接触对方球或黑8，直接交换球权。")
+            # if step_info.get('NO_POCKET_NO_RAIL'):
+            #     print("本杆判罚：无进球且母球或目标球未碰库，直接交换球权。")
+            # if step_info.get('NO_HIT'):
+            #     print("本杆判罚：白球未接触任何球，直接交换球权。")
+            # if step_info.get('ME_INTO_POCKET'):
+            #     print(f"我方球入袋：{step_info['ME_INTO_POCKET']}")
             if step_info.get('ENEMY_INTO_POCKET'):
                 print(f"对方球入袋：{step_info['ENEMY_INTO_POCKET']}")
         if done:
