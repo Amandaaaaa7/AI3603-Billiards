@@ -198,13 +198,13 @@ class Agent():
 class BasicAgent(Agent):
     def __init__(self,
                  n_simulations=50,       # 仿真次数
-                 c_puct=1.414):          # 探索系数 (归一化后建议用 1.414)
+                 c_puct=1.414):          # 探索系数
         super().__init__()
         self.n_simulations = n_simulations
         self.c_puct = c_puct
         self.ball_radius = 0.028575
         
-        # 定义噪声水平 (与 poolenv 保持一致或略大，以实现保守策略)
+        # 定义噪声水平 (与 poolenv 保持一致或略大)
         self.sim_noise = {
             'V0': 0.1, 'phi': 0.15, 'theta': 0.1, 'a': 0.005, 'b': 0.005
         }
@@ -254,7 +254,6 @@ class BasicAgent(Agent):
                 phi_ideal, dist = self._get_ghost_ball_target(cue_pos, obj_pos, pocket_pos)
 
                 # 2. 根据距离简单的估算力度 (距离越远力度越大，基础力度2.0)
-                # 这是一个非常粗糙的力度估算，但在MCTS中够用了
                 v_base = 1.5 + dist * 1.5
                 v_base = np.clip(v_base, 1.0, 6.0)
 
@@ -282,8 +281,6 @@ class BasicAgent(Agent):
         
         # 随机打乱顺序
         random.shuffle(actions)
-        # 限制候选动作数量，防止算力分散。取前N个看起来“顺眼”的其实已经够了，
-        # 这里我们简单截取前 25 个
         return actions[:30]
 
     def simulate_action(self, balls, table, action):
@@ -345,9 +342,6 @@ class BasicAgent(Agent):
             else:
                 raw_reward = analyze_shot_for_reward_own(shot, last_state_snapshot, my_targets)
             
-            # [修改点1] Min-Max 奖励归一化
-            # 假设最低分-200 (犯规+白球洗袋), 最高分+100 (进黑8)
-            # 范围跨度约 300。我们将分数映射到 [0, 1] 区间
             # 映射公式: (val - min) / (max - min)
             normalized_reward = (raw_reward - (-500)) / 650.0
             # 截断一下防止越界
