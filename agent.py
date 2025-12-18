@@ -148,7 +148,7 @@ def analyze_shot_for_reward(shot: pt.System, last_state: dict, player_targets: l
         score -= 100
     elif eight_pocketed:
         is_targeting_eight_ball_legally = (len(player_targets) == 1 and player_targets[0] == "8")
-        score += 100 if is_targeting_eight_ball_legally else -500
+        score += 150 if is_targeting_eight_ball_legally else -500
             
     if foul_first_hit:
         score -= 30
@@ -358,7 +358,7 @@ class BasicAgent(Agent):
         best_action = candidate_actions[best_idx]
         
         # 简单打印一下当前最好的预测胜率
-        print(f"[NewAgent] Best Avg Score: {avg_rewards[best_idx]:.3f} (Sims: {self.n_simulations})")
+        print(f"[BasicAgent] Best Avg Score: {avg_rewards[best_idx]:.3f} (Sims: {self.n_simulations})")
         
         return best_action
 
